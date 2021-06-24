@@ -1,0 +1,29 @@
+.board-container {
+    height: 75vh;
+    width: 75vh;
+    background: pink;
+    display: flex;
+    flex-direction: column;
+}
+.row-one,
+.row-two,
+.row-three {
+    height: 25vh;
+    width: 100%;
+    display: flex;
+}
+
+.row-one {
+    /* background: red; */
+}
+.row-two {
+    /* background: gray; */
+}
+.row-three {
+    /* background: blue; */
+}
+.cell {
+    margin: 1px;
+    width: 100%;
+    border: 1px solid black;
+}
