@@ -26,39 +26,7 @@
 .cell {
     width: 25vh;
     height: 25vh;
-}
-.row-one-1 {
-    border-color: black;
-    border-style: solid;
-    border-width: 0 2px 2px 0;
-}
-.row-one-2 {
-}
-.row-one-3 {
-    border-color: black;
-    border-style: solid;
-    border-width: 0 0 2px 2px;
-}
-.row-two-1 {
-}
-.row-two-2 {
-    border-color: black;
-    border-style: solid;
-    border-width: 2px;
-}
-.row-two-3 {
-}
-.row-three-1 {
-    border-color: black;
-    border-style: solid;
-    border-width: 2px 2px 0 0;
-}
-.row-three-2 {
-}
-.row-three-3 {
-    border-color: black;
-    border-style: solid;
-    border-width: 2px 0 0 2px;
+    border: 2px solid black;
 }
 
 /* end cells ==========================================*/
