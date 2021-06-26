@@ -15,11 +15,11 @@ const gameBoard = (() => {
             }
         };
         function clearBoard() {
-            // remove innerHTML of all cells
-            // const cells = document.querySelectorAll('.cell');
-            // cells.forEach(cell) => {
-            //     cell.remove();
-            // }
+
+            const cells = document.querySelectorAll('.cell');
+            cells.forEach(cell => {
+                cell.innerHTML = '';
+            });
             console.log('cleared the current board');
         
         }
@@ -54,20 +54,19 @@ const gameBoard = (() => {
 
     return {displayBoard};
 })();
-// gameBoard.displayBoard();
 
+// player object
 const Player = function(name, icon) {
-    this.icon = icon;
-    this.name = name;
-    this.score = 0; 
-    this.playerInfo = () => console.log(name, score);
+    const playerInfo = () => console.log(name, score);
+    return {name, icon, playerInfo};
 };
 
-const setup = (() => {
+// display and remove init setup form
+const form = (() => {
     const body = document.querySelector('body');
     //display startup form
     function displayForm() {
-        const formContainer = document.createElement('div');
+        const formContainer = document.createElement('form');
         formContainer.className = "start-form-container";
 
         function playerSetup(playerCSS, playerTitle) {
@@ -78,6 +77,7 @@ const setup = (() => {
             const name = document.createElement('input');
             name.className = playerCSS + "-input";
             name.name = playerCSS + "-input";
+            name.id = playerCSS + "-input";
             const nameLabel = document.createElement('label');
             nameLabel.innerHTML = playerTitle;
             nameLabel.htmlFor = playerCSS + "-input"; 
@@ -90,6 +90,7 @@ const setup = (() => {
             optionX.type = 'checkbox';
             optionX.className = playerCSS + "-optionX";
             optionX.name = playerCSS + "-optionX";
+            optionX.id = playerCSS + "-optionX";
             const optionXlabel = document.createElement('label');
             optionXlabel.htmlFor = playerCSS + "-optionX";
             optionXlabel.innerHTML = "X";
@@ -99,6 +100,7 @@ const setup = (() => {
             optionO.type = 'checkbox';
             optionO.className = playerCSS + "-optionO";
             optionO.name = playerCSS + "-optionO";
+            optionO.id = playerCSS + "-optionO";
             const optionOlabel = document.createElement('label');
             optionOlabel.htmlFor = playerCSS + "-optionO";
             optionOlabel.innerHTML = "O";
@@ -108,8 +110,8 @@ const setup = (() => {
             playerContainer.append(nameLabel, name, optionsContainer);
             formContainer.append(playerContainer);
         }
-        playerSetup('player-1', "Player One");
-        playerSetup('player-2', "Player Two");
+        playerSetup('player-one', "Player One");
+        playerSetup('player-two', "Player Two");
 
         const startBtn = document.createElement('button');
         startBtn.className = 'start-btn';
@@ -128,21 +130,41 @@ const setup = (() => {
 
 // initialize gameboard functionality and game logic
 const displayController = (() => {
-    // set event listener to react to player clicks
+    // get player info
+    form.displayForm();
+    let playerOne = Player();
+    let playerTwo = Player();
+    
+    // initialize players from form
+    function initPlayers() {
+        const playerOneName = document.getElementsByClassName('player-one-input')[0].value;
+        const playerTwoName = document.getElementsByClassName('player-two-input')[0].value;
+
+        playerOne.name = playerOneName;
+        playerOne.icon = 'X';
+
+        playerTwo.name = playerTwoName;
+        playerTwo.icon = 'O';
+        console.log(playerOne, playerTwo);
+    }
+
+    // set event listener to react to cell clicks
     function initCells() {
+        gameBoard.displayBoard();
         document.addEventListener('click', function(e) {
             if(e.target.classList.contains('cell')) {
                 e.target.innerHTML = "<span>X</span>";
             }
         });
-    }
-    // quit button resets the entire game state
-    const quitBtn = document.querySelector('.board-quit-btn');
-    quitBtn.addEventListener('click', function() {
+        // quit button resets the entire game state
+        const quitBtn = document.querySelector('.board-quit-btn');
+        quitBtn.addEventListener('click', function() {
         console.log('reset game state');
     });
+    }
+    
 
-    return {initCells};
+    return {initPlayers, initCells};
 })();
 // displayController.initCells();
 
