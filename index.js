@@ -66,7 +66,7 @@ const Player = function(name, icon) {
 const setup = (() => {
     const body = document.querySelector('body');
     //display startup form
-    function form() {
+    function displayForm() {
         const formContainer = document.createElement('div');
         formContainer.className = "start-form-container";
 
@@ -111,9 +111,19 @@ const setup = (() => {
         playerSetup('player-1', "Player One");
         playerSetup('player-2', "Player Two");
 
+        const startBtn = document.createElement('button');
+        startBtn.className = 'start-btn';
+        startBtn.innerHTML = 'START';
+        formContainer.append(startBtn);
+
         body.append(formContainer);
     }
-    return {form};
+
+    function removeForm() {
+        const formContainer = document.querySelector('.start-form-container');
+        body.removeChild(formContainer);
+    }
+    return {displayForm, removeForm};
 })();
 
 // initialize gameboard functionality and game logic
