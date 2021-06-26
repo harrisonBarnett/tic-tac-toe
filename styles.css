@@ -1,26 +1,47 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
 .board-container {
-    width: fit-content;
+    width: 400px;
     display: flex;
     flex-direction: column;
 }
 .row {
-    width: fit-content;
+    width: 100%;
     display: flex;
+    justify-content: center;
 }
 /* CELLS ============================================ */
 .cell {
-    width: 120px;
-    height: 120px;
+    width: 80px;
+    height: 80px;
     border: 2px solid black;
     margin: 2px;
-    border-radius: 10%;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.cell span {
+    font-size: 80px;
 }
 /* end cells ==========================================*/
 
 /* BUTTONS =========================================== */
 .board-btn-container {
     display: flex;
+    justify-content: center;
 }
 .board-reset-btn {
+    width: 80px;
+    height: 40px;
+    text-align: center;
+    border: none;
+    outline: none;
+    background: black;
+    color: white;
+    border-radius: 20px;
 }
 /* end buttons ======================================= */
