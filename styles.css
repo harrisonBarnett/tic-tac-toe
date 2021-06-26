@@ -34,7 +34,8 @@ body {
     display: flex;
     justify-content: center;
 }
-.board-reset-btn {
+.board-reset-btn,
+.board-quit-btn {
     width: 80px;
     height: 40px;
     text-align: center;
@@ -44,4 +45,22 @@ body {
     color: white;
     border-radius: 20px;
 }
+
 /* end buttons ======================================= */
+
+/* START FORM ======================================== */
+.start-form-container {
+    height: 300px;
+    width: 300px;
+    background: pink;
+    position: fixed;
+    z-index: 10;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.player-container {
+    margin: auto;
+}
+/* end start form ==================================== */
