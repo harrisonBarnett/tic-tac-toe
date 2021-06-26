@@ -1,10 +1,13 @@
-
-
 // insantiates the gameboard, including board reset
 const gameBoard = (() => {
-    const board = document.querySelector('.board-container');
+    const body = document.querySelector('body');
 
+    // display the grid
     const displayBoard = () => {
+        const board = document.createElement('div');
+        board.className = "board-container";
+        body.append(board);
+
         // appends cells to a row
         const addCell = (element, cells) => {
             let cellClass = element.className;
@@ -15,13 +18,11 @@ const gameBoard = (() => {
             }
         };
         function clearBoard() {
-
             const cells = document.querySelectorAll('.cell');
             cells.forEach(cell => {
                 cell.innerHTML = '';
             });
             console.log('cleared the current board');
-        
         }
         // append rows
         const rowOne = document.createElement('div');
@@ -36,7 +37,8 @@ const gameBoard = (() => {
         board.append(rowOne);
         board.append(rowTwo);
         board.append(rowThree);
-        // create/append reset button
+
+        // create/append reset button and quit button
         const btnContainer = document.createElement('div');
         btnContainer.className = "board-btn-container";
         const resetBtn = document.createElement('button');
@@ -48,15 +50,39 @@ const gameBoard = (() => {
         quitBtn.innerHTML = "QUIT";
         btnContainer.append(resetBtn);
         btnContainer.append(quitBtn);
-        board.append(btnContainer);
-        
+        board.append(btnContainer);   
     };
 
-    return {displayBoard};
+    function removeBoard() {
+        const board = document.querySelector('.board-container');
+        body.removeChild(board);
+    }
+
+    // remove setup form
+    // display the grid
+    // set event listener for cell behavior onclick
+    function initCells() {
+        form.removeForm();
+        displayBoard();
+        document.addEventListener('click', function(e) {
+            if(e.target.classList.contains('cell')) {
+                e.target.innerHTML = "<span>X</span>";
+            }
+        });
+        // quit button resets the entire game state by running 
+        // start() from the beginning
+        const quitBtn = document.querySelector('.board-quit-btn');
+        quitBtn.onclick = function() {game.start()};
+    }
+    
+
+    return {displayBoard, initCells, removeBoard};
 })();
 
 // player object
 const Player = function(name, icon) {
+    this.name = name;
+    this.icon = icon;
     const playerInfo = () => console.log(name, score);
     return {name, icon, playerInfo};
 };
@@ -66,6 +92,8 @@ const form = (() => {
     const body = document.querySelector('body');
     //display startup form
     function displayForm() {
+        const formContainerContainer = document.createElement('div');
+        formContainerContainer.className = "start-form-container-container";
         const formContainer = document.createElement('form');
         formContainer.className = "start-form-container";
 
@@ -117,26 +145,28 @@ const form = (() => {
         startBtn.className = 'start-btn';
         startBtn.innerHTML = 'START';
         formContainer.append(startBtn);
-
-        body.append(formContainer);
+        formContainerContainer.append(formContainer);
+        body.append(formContainerContainer);
     }
 
     function removeForm() {
-        const formContainer = document.querySelector('.start-form-container');
-        body.removeChild(formContainer);
+        const formContainerContainer = document.querySelector('.start-form-container-container');
+        body.removeChild(formContainerContainer);
     }
     return {displayForm, removeForm};
 })();
 
-// initialize gameboard functionality and game logic
-const displayController = (() => {
-    // get player info
-    form.displayForm();
-    let playerOne = Player();
-    let playerTwo = Player();
-    
-    // initialize players from form
-    function initPlayers() {
+const game = (() => {
+    function start() {
+        form.displayForm();
+        const board = document.querySelector('.board-container');
+        if(board) {
+            gameBoard.removeBoard();
+        } 
+        // initialize default player state
+        let playerOne = Player("", "");
+        let playerTwo = Player("", "");
+        // get chosen player name from form
         const playerOneName = document.getElementsByClassName('player-one-input')[0].value;
         const playerTwoName = document.getElementsByClassName('player-two-input')[0].value;
 
@@ -145,27 +175,11 @@ const displayController = (() => {
 
         playerTwo.name = playerTwoName;
         playerTwo.icon = 'O';
-        console.log(playerOne, playerTwo);
+        
+        const startBtn = document.querySelector('.start-btn');
+        startBtn.onclick = function() {gameBoard.initCells()};
+
     }
 
-    // set event listener to react to cell clicks
-    function initCells() {
-        gameBoard.displayBoard();
-        document.addEventListener('click', function(e) {
-            if(e.target.classList.contains('cell')) {
-                e.target.innerHTML = "<span>X</span>";
-            }
-        });
-        // quit button resets the entire game state
-        const quitBtn = document.querySelector('.board-quit-btn');
-        quitBtn.addEventListener('click', function() {
-        console.log('reset game state');
-    });
-    }
-    
-
-    return {initPlayers, initCells};
+    return {start};
 })();
-// displayController.initCells();
-
-
