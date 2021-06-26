@@ -13,17 +13,28 @@ const gameBoard = (() => {
         };
 
         const rowOne = document.createElement('div');
-        rowOne.className = "row-one";
+        rowOne.className = "row row-one";
         addCell(rowOne, 3);
         const rowTwo = document.createElement('div');
-        rowTwo.className = "row-two";
+        rowTwo.className = "row row-two";
         addCell(rowTwo, 3);
         const rowThree = document.createElement('div');
-        rowThree.className = "row-three";
+        rowThree.className = "row row-three";
         addCell(rowThree, 3);
+
         board.append(rowOne);
         board.append(rowTwo);
         board.append(rowThree);
+
+        const btnContainer = document.createElement('div');
+        btnContainer.className = "board-btn-container";
+        const resetBtn = document.createElement('button');
+        resetBtn.className = "board-reset-btn";
+        resetBtn.innerHTML = "RESET";
+        btnContainer.append(resetBtn);
+
+        board.append(btnContainer);
+
     };
 
     return {displayBoard};

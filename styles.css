@@ -1,32 +1,26 @@
 .board-container {
-    height: 75vh;
-    width: 75vh;
-    /* background: pink; */
+    width: fit-content;
     display: flex;
     flex-direction: column;
 }
-.row-one,
-.row-two,
-.row-three {
-    height: 25vh;
-    width: 100%;
+.row {
+    width: fit-content;
     display: flex;
-}
-
-.row-one {
-    /* background: red; */
-}
-.row-two {
-    /* background: gray; */
-}
-.row-three {
-    /* background: blue; */
 }
 /* CELLS ============================================ */
 .cell {
-    width: 25vh;
-    height: 25vh;
+    width: 120px;
+    height: 120px;
     border: 2px solid black;
+    margin: 2px;
+    border-radius: 10%;
 }
-
 /* end cells ==========================================*/
+
+/* BUTTONS =========================================== */
+.board-btn-container {
+    display: flex;
+}
+.board-reset-btn {
+}
+/* end buttons ======================================= */
