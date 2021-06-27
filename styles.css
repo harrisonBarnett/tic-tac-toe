@@ -30,7 +30,7 @@ body {
     justify-content: center;
     align-items: center;
 }
-.cell span {
+.cell {
     font-size: 80px;
 }
 /* end cells ==========================================*/
@@ -63,10 +63,7 @@ body {
     align-items: center;
 }
 .start-form-container {
-    height: 75vw;
-    width: 75vw;
     background: pink;
-
     display: flex;
     flex-direction: column;
 

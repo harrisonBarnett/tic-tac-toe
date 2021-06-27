@@ -61,12 +61,12 @@ const gameBoard = (() => {
     // remove setup form
     // display the grid
     // set event listener for cell behavior onclick
-    function initCells() {
+    function initCells(p1, p2) {
         form.removeForm();
         displayBoard();
         document.addEventListener('click', function(e) {
             if(e.target.classList.contains('cell')) {
-                e.target.innerHTML = "<span>X</span>";
+                e.target.innerText = p2;
             }
         });
         // quit button resets the entire game state by running 
@@ -109,33 +109,10 @@ const form = (() => {
             const nameLabel = document.createElement('label');
             nameLabel.innerHTML = playerTitle;
             nameLabel.htmlFor = playerCSS + "-input"; 
-            
-            // options container (X or O player pieces)
-            const optionsContainer = document.createElement('div');
-            optionsContainer.className = playerCSS + "-options";
-
-            const optionX = document.createElement('input');
-            optionX.type = 'checkbox';
-            optionX.className = playerCSS + "-optionX";
-            optionX.name = playerCSS + "-optionX";
-            optionX.id = playerCSS + "-optionX";
-            const optionXlabel = document.createElement('label');
-            optionXlabel.htmlFor = playerCSS + "-optionX";
-            optionXlabel.innerHTML = "X";
-            optionsContainer.append(optionXlabel, optionX);
-
-            const optionO = document.createElement('input');
-            optionO.type = 'checkbox';
-            optionO.className = playerCSS + "-optionO";
-            optionO.name = playerCSS + "-optionO";
-            optionO.id = playerCSS + "-optionO";
-            const optionOlabel = document.createElement('label');
-            optionOlabel.htmlFor = playerCSS + "-optionO";
-            optionOlabel.innerHTML = "O";
-            optionsContainer.append(optionOlabel, optionO);
 
 
-            playerContainer.append(nameLabel, name, optionsContainer);
+
+            playerContainer.append(nameLabel, name);
             formContainer.append(playerContainer);
         }
         playerSetup('player-one', "Player One");
@@ -177,7 +154,7 @@ const game = (() => {
         playerTwo.icon = 'O';
         
         const startBtn = document.querySelector('.start-btn');
-        startBtn.onclick = function() {gameBoard.initCells()};
+        startBtn.onclick = function() {gameBoard.initCells(playerOne.icon, playerTwo.icon)};
 
     }
 
