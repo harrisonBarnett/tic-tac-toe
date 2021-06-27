@@ -3,7 +3,7 @@ body {
     width: 100%;
     margin: 0;
     padding: 0;
-    font-family: sans-serif;
+    font-family: monospace;
     position: relative;
 }
 .board-container {
@@ -32,6 +32,9 @@ body {
 }
 .cell {
     font-size: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 /* end cells ==========================================*/
 
@@ -50,9 +53,26 @@ body {
     background: black;
     color: white;
     border-radius: 20px;
+    margin: .5em;
 }
 
 /* end buttons ======================================= */
+
+/* PLAYER ZONE ======================================= */
+.player-score-container {
+    width: 100%;
+    height: 80px;
+    display: flex;
+    justify-content: space-around;
+}
+.player-one-container,
+.player-two-container {
+    text-align: center;
+    width: 100%;
+    background: pink;
+}
+
+/* end player zone =================================== */
 
 /* START FORM ======================================== */
 .start-form-container-container {
@@ -66,11 +86,8 @@ body {
     background: pink;
     display: flex;
     flex-direction: column;
-
 }
-
 .player-container {
-    margin: 2em;
     display: flex;
     flex-direction: column;
 }
