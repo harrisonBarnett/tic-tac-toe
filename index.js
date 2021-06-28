@@ -24,7 +24,6 @@ const gameBoard = (() => {
                 cell.style = "pointer-events: auto";
                 cell.innerHTML = '';
             });
-            console.log('cleared the current board');
         }
         // append rows
         const rowOne = document.createElement('div');
@@ -185,12 +184,10 @@ const game = (() => {
         if(currentPlayer == playerOne) {
             element.innerHTML = "X";
             element.style = "pointer-events: none";
-            console.log("player one placing icon");
             currentPlayer = playerTwo;
         } else {
             element.innerHTML = "O";
             element.style = "pointer-events: none";
-            console.log("player two placing icon");
             currentPlayer = playerOne;
         }
     }
