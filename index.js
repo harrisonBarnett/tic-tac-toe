@@ -13,13 +13,15 @@ const gameBoard = (() => {
             for(i = 1; i <= cells; i++) {
                 let cell = document.createElement('div');
                 cell.className = "cell";
-                cell.onclick = function() {game.placeIcon()};
+                cell.style = "pointer-events: auto";
+                cell.onclick = function() {game.placeIcon(cell)};
                 element.append(cell);
             }
         };
         function clearBoard() {
             const cells = document.querySelectorAll('.cell');
             cells.forEach(cell => {
+                cell.style = "pointer-events: auto";
                 cell.innerHTML = '';
             });
             console.log('cleared the current board');
@@ -48,6 +50,7 @@ const gameBoard = (() => {
         const quitBtn = document.createElement('button');
         quitBtn.className = "board-quit-btn";
         quitBtn.innerHTML = "QUIT";
+        quitBtn.onclick = function() {game.start()};
         btnContainer.append(resetBtn);
         btnContainer.append(quitBtn);
         board.append(btnContainer);
@@ -88,26 +91,29 @@ const gameBoard = (() => {
         body.removeChild(board);
     }
 
+    // ******** PRETTY SURE I NEED NONE OF THIS *****************
+    //
+
     // set event listener for cell behavior onclick
-    function initCells(p1, p2, current) {
-        document.addEventListener('click', function(e) {
-            if(e.target.classList.contains('cell')) {
-                if (current == p1) {
-                    e.target.innerText = p1.icon;
-                    game.swapPlayer(p2);
-                } else {
-                    e.target.innerText = p2.icon;
-                    game.swapPlayer(p1);
-                }
-            }
-        });
-        // quit button resets the entire game state by running 
-        // start() from the beginning
-        const quitBtn = document.querySelector('.board-quit-btn');
-        quitBtn.onclick = function() {game.start()};
-    }
+    // function initCells(p1, p2, current) {
+    //     document.addEventListener('click', function(e) {
+    //         if(e.target.classList.contains('cell')) {
+    //             if (current == p1) {
+    //                 e.target.innerText = p1.icon;
+    //                 game.swapPlayer(p2);
+    //             } else {
+    //                 e.target.innerText = p2.icon;
+    //                 game.swapPlayer(p1);
+    //             }
+    //         }
+    //     });
+    //     // quit button resets the entire game state by running 
+    //     // start() from the beginning
+    //     const quitBtn = document.querySelector('.board-quit-btn');
+    //     quitBtn.onclick = function() {game.start()};
+    // }
     
-    return {displayBoard, initCells, removeBoard};
+    return {displayBoard, removeBoard};
 })();
 
 // player object
@@ -172,20 +178,31 @@ const game = (() => {
     let currentPlayer = playerOne;
     function swapPlayer(player) {
         currentPlayer = player;
-        gameBoard.initCells(playerOne, playerTwo, currentPlayer);
+        // gameBoard.initCells(playerOne, playerTwo, currentPlayer);
     }
 
-    function placeIcon() {
-        console.log("placing icon");
+    function placeIcon(element) {
+        if(currentPlayer == playerOne) {
+            element.innerHTML = "X";
+            element.style = "pointer-events: none";
+            console.log("player one placing icon");
+            currentPlayer = playerTwo;
+        } else {
+            element.innerHTML = "O";
+            element.style = "pointer-events: none";
+            console.log("player two placing icon");
+            currentPlayer = playerOne;
+        }
     }
 
     function start() {
-        form.displayForm();
         const board = document.querySelector('.board-container');
         if(board) {
             gameBoard.removeBoard();
         } 
 
+        form.displayForm();
+        
         const startBtn = document.querySelector('.start-btn');
         startBtn.onclick = function() {
             // get player names from form
@@ -208,7 +225,7 @@ const game = (() => {
             // remove form and initialize initial board state
             form.removeForm();
             gameBoard.displayBoard(playerOne, playerTwo);
-            gameBoard.initCells(playerOne, playerTwo, currentPlayer);
+            // gameBoard.initCells(playerOne, playerTwo, currentPlayer);
         };
 
     }
