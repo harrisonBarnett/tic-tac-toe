@@ -13,6 +13,7 @@ const gameBoard = (() => {
             for(i = 1; i <= cells; i++) {
                 let cell = document.createElement('div');
                 cell.className = "cell";
+                cell.onclick = function() {game.placeIcon()};
                 element.append(cell);
             }
         };
@@ -174,6 +175,10 @@ const game = (() => {
         gameBoard.initCells(playerOne, playerTwo, currentPlayer);
     }
 
+    function placeIcon() {
+        console.log("placing icon");
+    }
+
     function start() {
         form.displayForm();
         const board = document.querySelector('.board-container');
@@ -208,7 +213,7 @@ const game = (() => {
 
     }
 
-    return {start, swapPlayer};
+    return {start, swapPlayer, placeIcon};
 })();
 
 game.start();
