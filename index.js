@@ -10,10 +10,9 @@ const gameBoard = (() => {
 
         // appends cells to a row
         const addCell = (element, cells) => {
-            let cellClass = element.className;
             for(i = 1; i <= cells; i++) {
                 let cell = document.createElement('div');
-                cell.className = "cell " + cellClass + "-" + i;
+                cell.className = "cell";
                 element.append(cell);
             }
         };
@@ -88,15 +87,17 @@ const gameBoard = (() => {
         body.removeChild(board);
     }
 
-    // remove setup form
-    // display the grid
     // set event listener for cell behavior onclick
-    function initCells(p1, p2) {
-        form.removeForm();
-        displayBoard(p1, p2);
+    function initCells(p1, p2, current) {
         document.addEventListener('click', function(e) {
             if(e.target.classList.contains('cell')) {
-                e.target.innerText = p1.icon;
+                if (current == p1) {
+                    e.target.innerText = p1.icon;
+                    game.swapPlayer(p2);
+                } else {
+                    e.target.innerText = p2.icon;
+                    game.swapPlayer(p1);
+                }
             }
         });
         // quit button resets the entire game state by running 
@@ -163,23 +164,29 @@ const form = (() => {
 })();
 
 const game = (() => {
+    // initialize default player state
+    let playerOne = Player("", "");
+    let playerTwo = Player("", "");
+    // set the "current" player
+    let currentPlayer = playerOne;
+    function swapPlayer(player) {
+        currentPlayer = player;
+        gameBoard.initCells(playerOne, playerTwo, currentPlayer);
+    }
+
     function start() {
         form.displayForm();
         const board = document.querySelector('.board-container');
         if(board) {
             gameBoard.removeBoard();
         } 
-        // initialize default player state
-        let playerOne = Player("", "");
-        let playerTwo = Player("", "");
-        
-        
+
         const startBtn = document.querySelector('.start-btn');
         startBtn.onclick = function() {
-            // get chosen player name from form
+            // get player names from form
             const playerOneName = document.getElementsByClassName('player-one-input')[0].value;
             const playerTwoName = document.getElementsByClassName('player-two-input')[0].value;
-
+            // set default player names
             if(playerOneName) {
                 playerOne.name = playerOneName;
             } else {
@@ -193,14 +200,15 @@ const game = (() => {
                 playerTwo.name = "O";
             }
             playerTwo.icon = 'O';
-
-            console.log(playerOne);
-            console.log(playerTwo);
-
-            gameBoard.initCells(playerOne, playerTwo)
+            // remove form and initialize initial board state
+            form.removeForm();
+            gameBoard.displayBoard(playerOne, playerTwo);
+            gameBoard.initCells(playerOne, playerTwo, currentPlayer);
         };
 
     }
 
-    return {start};
+    return {start, swapPlayer};
 })();
+
+game.start();
