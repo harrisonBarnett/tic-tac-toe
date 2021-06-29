@@ -1,16 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap');
+
+
 body {
-    height: 100%;
-    width: 100%;
+    height: 100vh;
+    width: 100vw;
     margin: 0;
     padding: 0;
-    font-family: monospace;
+    font-family: Arial;
     position: relative;
+
+    background-image: linear-gradient(
+        45deg,
+        #5fa277,
+        #31857c,
+        #276672
+        );
+    background-size: 400%;
+    animation: bg-animation 30s infinite;
+}
+@keyframes bg-animation {
+    0% {background-position: left}
+    50% {background-position: right}
+    100% {background-position: left}
 }
 .board-container {
     width: 400px;
-
-    margin: 0 auto;
-
+    margin: 200px auto auto auto;
     display: flex;
     flex-direction: column;
 }
@@ -23,18 +38,23 @@ body {
 .cell {
     width: 80px;
     height: 80px;
-    border: 2px solid black;
-    margin: 2px;
+    font-size: 5em;
+    font-family: 'Architects Daughter';
+    margin: 4px;
+    background: #ffc2af;
     border-radius: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
+    color: white;
+    box-shadow: 2px 2px 8px rgba(0,0,0,.5);
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, .5);
+    transition: all 100ms ease-in;
 }
-.cell {
-    font-size: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.cell:hover {
+    transform: scale(.9);
+    box-shadow: none;
+    transition: all 100ms ease-in;
 }
 /* end cells ==========================================*/
 
@@ -45,15 +65,26 @@ body {
 }
 .board-reset-btn,
 .board-quit-btn {
-    width: 80px;
-    height: 40px;
+    width: 100px;
+    height: 50px;
     text-align: center;
     border: none;
     outline: none;
-    background: black;
+    background: #fd8b7b;
+    font-size: 1.2em;
+    font-weight: 400;
     color: white;
-    border-radius: 20px;
+    border-radius: 50px;
     margin: .5em;
+    box-shadow: 1px 1px 8px rgba(0,0,0,.5);
+    transition: all 50ms ease-in;
+}
+.board-reset-btn:hover,
+.board-quit-btn:hover {
+    background: #ff7664;
+    transform: scale(.95);
+    box-shadow: none;
+    transition: all 50ms ease-in;
 }
 
 /* end buttons ======================================= */
@@ -69,9 +100,24 @@ body {
 .player-two-container {
     text-align: center;
     width: 100%;
-    background: pink;
 }
+.player-one-title,
+.player-two-title {
+    margin: 0;
+    padding: 0;
+    font-size: 2em;
+    color: white;
+    font-family: "Architects Daughter";
+}
+.player-one-score,
+.player-two-score {
+    margin: 0;
+    padding: 0;
+    font-size: 1.2em;
+    font-family: "Architects Daughter";
+    color: white;
 
+}
 /* end player zone =================================== */
 
 /* START FORM ======================================== */
@@ -83,25 +129,57 @@ body {
     align-items: center;
 }
 .start-form-container {
-    background: pink;
+    width: 300px;
+    height: 300px;
+    background: #ff9d91;
     display: flex;
     flex-direction: column;
+    justify-content: space-evenly;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, .25);
+    border-radius: 10%;
 }
 .player-container {
     display: flex;
     flex-direction: column;
+    align-items: center;
+}
+.player-container input {
+    border: none;
+    outline: none;
+    width: 200px;
+    font-size: 1.2em;
+}
+.player-container label {
+    font-size: 1.2em;
+    text-align: left;
+    margin-bottom: 0;
+    color: rgb(39, 29, 29);
+
+}
+.player-container input,
+.player-container label {
+    margin: .5em;
 }
 
 .start-btn {
     margin: 0 auto;
-    width: 80px;
-    height: 40px;
+    width: 100px;
+    height: 50px;
     text-align: center;
     border: none;
     outline: none;
-    background: black;
+    background: #5fa277;
     color: white;
-    border-radius: 20px;
-
+    font-size: 1.2em;
+    font-weight: 400;
+    border-radius: 50px;
+    box-shadow: 1px 1px 8px rgba(0,0,0,.5);
+    transition: all 50ms ease-in;
+}
+.start-btn:hover {
+    background: #31857c;
+    transform: scale(.95);
+    box-shadow: none;
+    transition: all 50ms ease-in;
 }
 /* end start form ==================================== */

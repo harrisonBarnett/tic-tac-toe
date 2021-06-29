@@ -172,6 +172,7 @@ const game = (() => {
     function placeIcon(element) {
         if(currentPlayer == playerOne) {
             element.innerHTML = "X";
+            element.classList.toggle('x-cell');
             element.style = "pointer-events: none";
             currentPlayer = playerTwo;
         } else {
@@ -210,6 +211,10 @@ const game = (() => {
         console.log(winner.name + " is the winner!");
         winner.score++;
         document.querySelector("." + winner.cssSelector + "-score").innerHTML = winner.score;
+        let cells = document.querySelectorAll('.cell');
+        cells.forEach(cell => {
+            cell.style = "pointer-events: none";
+        })
     }
     function checkBoard(element) {
         switch(element.id) {
