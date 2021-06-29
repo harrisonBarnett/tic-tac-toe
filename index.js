@@ -8,6 +8,11 @@ const gameBoard = (() => {
         board.className = "board-container";
         body.append(board);
 
+        const mainTitle = document.createElement('p');
+        mainTitle.className = "main-title";
+        mainTitle.innerHTML = "TIC-TAC-TOE";
+        board.append(mainTitle);
+
         // appends cells to a row
         const addCell = (element, cells) => {
             for(i = 0; i < cells; i++) {
@@ -63,6 +68,11 @@ const gameBoard = (() => {
         // create/append player names/scores
         const playerZone = document.createElement('div');
         playerZone.className = 'player-score-container';
+
+        const containerTitle = document.createElement('p');
+        containerTitle.className = 'player-zone-title';
+        containerTitle.innerHTML = 'SCORE';
+        board.append(containerTitle);
 
         const player1 = document.createElement('div');
         player1.className = "player-one-container";
@@ -135,8 +145,8 @@ const form = (() => {
             playerContainer.append(nameLabel, name);
             formContainer.append(playerContainer);
         }
-        playerSetup('player-one', "Player One");
-        playerSetup('player-two', "Player Two");
+        playerSetup('player-one', "PLAYER ONE");
+        playerSetup('player-two', "PLAYER TWO");
 
         const startBtn = document.createElement('button');
         startBtn.className = 'start-btn';
@@ -154,6 +164,7 @@ const form = (() => {
     return {displayForm, removeForm};
 })();
 
+// full game flow and logic 
 const game = (() => {
     // initialize default player state
     let playerOne = Player("", "X", "player-one");
@@ -208,7 +219,7 @@ const game = (() => {
     // declare winner
     function declareWinner() {
         winner = opposite(currentPlayer);
-        console.log(winner.name + " is the winner!");
+        alert(winner.name + " is the winner!");
         winner.score++;
         document.querySelector("." + winner.cssSelector + "-score").innerHTML = winner.score;
         let cells = document.querySelectorAll('.cell');
