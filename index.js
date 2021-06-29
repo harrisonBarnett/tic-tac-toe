@@ -10,9 +10,11 @@ const gameBoard = (() => {
 
         // appends cells to a row
         const addCell = (element, cells) => {
-            for(i = 1; i <= cells; i++) {
+            for(i = 0; i < cells; i++) {
+                let str = element.id;
                 let cell = document.createElement('div');
-                cell.className = "cell";
+                cell.className = "cell " + i;
+                cell.id = str;
                 cell.style = "pointer-events: auto";
                 cell.onclick = function() {game.placeIcon(cell)};
                 element.append(cell);
@@ -24,16 +26,20 @@ const gameBoard = (() => {
                 cell.style = "pointer-events: auto";
                 cell.innerHTML = '';
             });
+            game.clearBoard();
         }
         // append rows
         const rowOne = document.createElement('div');
         rowOne.className = "row row-one";
+        rowOne.id = "row-one";
         addCell(rowOne, 3);
         const rowTwo = document.createElement('div');
         rowTwo.className = "row row-two";
+        rowTwo.id = "row-two";
         addCell(rowTwo, 3);
         const rowThree = document.createElement('div');
         rowThree.className = "row row-three";
+        rowThree.id = "row-three";
         addCell(rowThree, 3);
         board.append(rowOne);
         board.append(rowTwo);
@@ -65,7 +71,7 @@ const gameBoard = (() => {
         player1Title.innerHTML = p1.name;
         player1.append(player1Title);
         const player1Score = document.createElement('p');
-        player1Score.classname = "player-one-score";
+        player1Score.className = "player-one-score";
         player1Score.innerHTML = "0";
         player1.append(player1Score);
 
@@ -76,7 +82,7 @@ const gameBoard = (() => {
         player2Title.innerHTML = p2.name;
         player2.append(player2Title);
         const player2Score = document.createElement('p');
-        player2Score.classname = "player-two-score";
+        player2Score.className = "player-two-score";
         player2Score.innerHTML = "0";
         player2.append(player2Score);
 
@@ -89,39 +95,18 @@ const gameBoard = (() => {
         const board = document.querySelector('.board-container');
         body.removeChild(board);
     }
-
-    // ******** PRETTY SURE I NEED NONE OF THIS *****************
-    //
-
-    // set event listener for cell behavior onclick
-    // function initCells(p1, p2, current) {
-    //     document.addEventListener('click', function(e) {
-    //         if(e.target.classList.contains('cell')) {
-    //             if (current == p1) {
-    //                 e.target.innerText = p1.icon;
-    //                 game.swapPlayer(p2);
-    //             } else {
-    //                 e.target.innerText = p2.icon;
-    //                 game.swapPlayer(p1);
-    //             }
-    //         }
-    //     });
-    //     // quit button resets the entire game state by running 
-    //     // start() from the beginning
-    //     const quitBtn = document.querySelector('.board-quit-btn');
-    //     quitBtn.onclick = function() {game.start()};
-    // }
     
     return {displayBoard, removeBoard};
 })();
 
 // player object
-const Player = function(name, icon) {
+const Player = function(name, icon, cssSelector) {
     this.name = name;
     this.icon = icon;
     this.score = 0;
+    this.cssSelector = cssSelector;
     const playerInfo = () => console.log(name, score);
-    return {name, icon, score, playerInfo};
+    return {name, icon, score, cssSelector, playerInfo};
 };
 
 // display and remove init setup form
@@ -171,15 +156,19 @@ const form = (() => {
 
 const game = (() => {
     // initialize default player state
-    let playerOne = Player("", "");
-    let playerTwo = Player("", "");
+    let playerOne = Player("", "X", "player-one");
+    let playerTwo = Player("", "O", "player-two");
+
     // set the "current" player
     let currentPlayer = playerOne;
+
+    // swap player between placing icons
     function swapPlayer(player) {
         currentPlayer = player;
-        // gameBoard.initCells(playerOne, playerTwo, currentPlayer);
     }
 
+    // onclick event for each cell that places the current player's icon
+    // makes the button unclickable
     function placeIcon(element) {
         if(currentPlayer == playerOne) {
             element.innerHTML = "X";
@@ -190,16 +179,89 @@ const game = (() => {
             element.style = "pointer-events: none";
             currentPlayer = playerOne;
         }
+        checkBoard(element);
+    }
+
+    // this is a local parsable representation of the current gameboard
+    let rowOne = [1, 2, 3];
+    let rowTwo = [4, 5, 6];
+    let rowThree = [7, 8, 39];
+    // helper fxn swaps the current player around
+    function opposite(currentPlayer) {
+        if(currentPlayer == playerOne){
+            return playerTwo;
+        } else {
+            return playerOne;
+        }
+    }
+    // clear the board between rounds
+    // set the current player to last round's winner
+    function clearBoard() {
+        rowOne = [1, 2, 3];
+        rowTwo = [4, 5, 6];
+        rowThree = [7, 8, 39];
+        currentPlayer = opposite(currentPlayer);
+    }
+    // add the placed icon to the above array
+    // parse arrays for row, column and diagonal matches
+    // declare winner
+    function declareWinner() {
+        winner = opposite(currentPlayer);
+        console.log(winner.name + " is the winner!");
+        winner.score++;
+        document.querySelector("." + winner.cssSelector + "-score").innerHTML = winner.score;
+    }
+    function checkBoard(element) {
+        switch(element.id) {
+            case "row-one":
+            rowOne[element.classList[1]] = element.innerHTML;
+                break;
+            case "row-two":
+            rowTwo[element.classList[1]] = element.innerHTML;
+                break;
+            case "row-three":
+            rowThree[element.classList[1]] = element.innerHTML;
+                break;
+            default:
+                alert("something went wrong");
+                start();
+        }
+        if(rowOne[0] == rowOne[1] && rowOne[0] == rowOne[2]) {
+            declareWinner();
+        } else if (rowTwo[0] == rowTwo[1] && rowTwo[0] == rowTwo[2]) {
+            declareWinner();
+        } else if (rowThree[0] == rowThree[1] && rowThree[0] == rowThree[2]) {
+            declareWinner();
+        } else if (rowOne[0] == rowTwo[0] && rowOne[0] == rowThree[0]) {
+            declareWinner();
+        } else if (rowOne[1] == rowTwo[1] && rowOne[1] == rowThree[1]) {
+            declareWinner();
+        } else if (rowOne[2] == rowTwo[2] && rowOne[2] == rowThree[2]) {
+            declareWinner();
+        } else if (rowOne[0] == rowTwo[1] && rowOne[0] == rowThree[2]) {
+            declareWinner();
+        } else if (rowOne[2] == rowTwo[1] && rowOne[2] == rowThree[0]) {
+            declareWinner();
+        } else {
+            return;
+        }
     }
 
     function start() {
+        // clear all variables for a fresh game
+        clearBoard();
+        playerOne = Player("", "X", "player-one");
+        playerTwo = Player("", "O", "player-two");
+        currentPlayer = playerOne;
+
         const board = document.querySelector('.board-container');
         if(board) {
             gameBoard.removeBoard();
         } 
 
+        // display form before the beginning of every game
         form.displayForm();
-        
+        // parse names from form on click and then initiate game board
         const startBtn = document.querySelector('.start-btn');
         startBtn.onclick = function() {
             // get player names from form
@@ -211,23 +273,20 @@ const game = (() => {
             } else {
                 playerOne.name = "X";
             }
-            playerOne.icon = 'X';
 
             if (playerTwoName) {
                 playerTwo.name = playerTwoName;
             } else {
                 playerTwo.name = "O";
             }
-            playerTwo.icon = 'O';
             // remove form and initialize initial board state
             form.removeForm();
             gameBoard.displayBoard(playerOne, playerTwo);
-            // gameBoard.initCells(playerOne, playerTwo, currentPlayer);
         };
 
     }
 
-    return {start, swapPlayer, placeIcon};
+    return {start, swapPlayer, placeIcon, clearBoard};
 })();
 
 game.start();
